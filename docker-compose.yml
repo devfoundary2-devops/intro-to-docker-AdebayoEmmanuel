@@ -5,13 +5,19 @@ services:
       - "8080:8080"
     depends_on:
       - db
+      - cache
+    environment:
+      DATABASE_URL: postgresql://demo:password@db/demo
   db:
-    image: postgres:17-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_USER: demo
       POSTGRES_PASSWORD: password
       POSTGRES_DB: demo
     volumes:
-      - /Users/david/tech4dev/v2/bootcamp/docker/data:/var/lib/postgresql/data
-# volumes:
-#   db_data:
+      - db_data:/var/lib/postgresql/data
+  cache:
+    image: redis:7-alpine
+
+volumes:
+  db_data:
